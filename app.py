@@ -62,38 +62,37 @@ st.markdown("""
 ##### [PowerBI DigiChallenge 2024 Leaderboard](https://app.powerbi.com/groups/af629249-ad5b-42c4-8953-0f312d335990/reports/b5a6d2a5-953d-4b92-bfa2-3b6853c5bc3e?ctid=f66fae02-5d36-495b-bfe0-78a6ff9f8e6e&pbi_source=linkShare&bookmarkGuid=76c41688-3064-496c-9477-59b29875d78c)
 - Teams are encouraged to submit predictions for both markets since the winners will be chosen based on whichever team has the **highest cumulatize score** from both markets.
 - The public leaderboard compares the predictions with 50% of the actual sales volumes in the validation sets. The final submissions will be compared against 100% of the actual sales volumes in the validation sets. The final results will not be announced until the end of the challenge.
-- Please see the scoring criteria below: 
             """)
 
-data = {
-    "UK": [50, 35, 25, 20, 15, 10, 5],
-    "ID": [50, 35, 25, 20, 15, 10, 5]
-}
-index = ["1st", "2nd", "3rd", "4th", "5th", "6th-10th", "11th-onwards"]
-df = pd.DataFrame(data, index=index)
+# data = {
+#     "UK": [50, 35, 25, 20, 15, 10, 5],
+#     "ID": [50, 35, 25, 20, 15, 10, 5]
+# }
+# index = ["1st", "2nd", "3rd", "4th", "5th", "6th-10th", "11th-onwards"]
+# df = pd.DataFrame(data, index=index)
 
-html_table = df.to_html(classes='styled-table')
+# html_table = df.to_html(classes='styled-table')
 
-st.markdown("""
-    <style>
-    .styled-table {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed;
-    }
-    .styled-table th, .styled-table td {
-        border: 1px solid #dddddd;
-        text-align: center;
-        padding: 8px;
-        width: 100px;
-    }
-    .styled-table th {
-        font-weight: bold;
-    }
-    .styled-table tbody th {
-        text-align: left;
-    }
-    </style>
-""", unsafe_allow_html=True)
+# st.markdown("""
+#     <style>
+#     .styled-table {
+#         width: 100%;
+#         border-collapse: collapse;
+#         table-layout: fixed;
+#     }
+#     .styled-table th, .styled-table td {
+#         border: 1px solid #dddddd;
+#         text-align: center;
+#         padding: 8px;
+#         width: 100px;
+#     }
+#     .styled-table th {
+#         font-weight: bold;
+#     }
+#     .styled-table tbody th {
+#         text-align: left;
+#     }
+#     </style>
+# """, unsafe_allow_html=True)
 
-st.markdown(html_table, unsafe_allow_html=True)
+# st.markdown(html_table, unsafe_allow_html=True)
