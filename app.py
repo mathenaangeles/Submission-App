@@ -32,7 +32,7 @@ Please note that your submission file must containing the following columns, whe
 - **ID**: Customer, PromoIDText, ProductNameSku_PPH, WeekSkID, :orange-background[ActualNetPromoSalesVolumeSellOut]
             """)
 
-uk_file = st.file_uploader("Please upload your UK CSV file.", type=["csv"], key="uk_file_uploader")
+uk_file = st.file_uploader("Please upload your UK CSV file (e.g., **submission_1_uk.csv**)", type=["csv"], key="uk_file_uploader")
 
 if uk_file is not None:
     st.write(f"File name: {uk_file.name}")
@@ -42,7 +42,7 @@ if uk_file is not None:
     if st.button("Upload to UK submission folder", key="upload_uk"):
         upload_to_azure_storage(azure_storage_container_name, "uk", uk_file)
 
-id_file = st.file_uploader("Please upload your ID CSV file.", type=["csv"], key="id_file_uploader")
+id_file = st.file_uploader("Please upload your ID CSV file (e.g., **submission_1_id.csv**)", type=["csv"], key="id_file_uploader")
 
 if id_file is not None:
     st.write(f"File name: {id_file.name}")
