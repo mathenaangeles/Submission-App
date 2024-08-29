@@ -16,12 +16,14 @@ azure_storage_container_name = os.getenv("AZURE_STORAGE_CONTAINER_NAME")
 
 def upload_to_azure_storage(container_name, folder_name, file):
     blob_client = blob_service_client.get_blob_client(container=container_name, blob=f"{folder_name}/{file.name}")
-    blob_client.upload_blob(file, overwrite=True)
+    base_name, extension = os.path.splitext(file.name)
+    counter = 0
+    while blob_client.exists():
+        counter += 1
+        file_name = f"{base_name} ({counter}){extension}"
+        blob_client = blob_service_client.get_blob_client(container=container_name, blob=f"{folder_name}/{file_name}")
+    blob_client.upload_blob(file, overwrite=False)
     st.success(f"{file.name} has been successfully uploaded to the {folder_name} folder.")
-
-def file_exists(container_name, folder_name, file_name):
-    blob_client = blob_service_client.get_blob_client(container=container_name, blob=f"{folder_name}/{file_name}")
-    return blob_client.exists()
 
 st.title("DigiChallenge 2024 Forecasting Challenge Submissions")
 st.markdown("""
@@ -37,20 +39,16 @@ uk_file = st.file_uploader("Please upload your UK CSV file (e.g., **submission_1
 if uk_file is not None:
     st.write(f"File name: {uk_file.name}")
     st.write(f"File size: {uk_file.size} bytes")
-    if file_exists(azure_storage_container_name, "uk", uk_file.name):
-        st.warning("This file already exists and will be overwritten.")
     if st.button("Upload to UK submission folder", key="upload_uk"):
-        upload_to_azure_storage(azure_storage_container_name, "uk", uk_file)
+        upload_to_azure_storage(azure_storage_container_name, "Digichallenge24/Submissions/UK", uk_file)
 
 id_file = st.file_uploader("Please upload your ID CSV file (e.g., **submission_1_id.csv**)", type=["csv"], key="id_file_uploader")
 
 if id_file is not None:
     st.write(f"File name: {id_file.name}")
     st.write(f"File size: {id_file.size} bytes")
-    if file_exists(azure_storage_container_name, "id", id_file.name):
-        st.warning("This file already exists and will be overwritten.")
     if st.button("Upload to ID submission folder", key="upload_id"):
-        upload_to_azure_storage(azure_storage_container_name, "id", id_file)
+        upload_to_azure_storage(azure_storage_container_name, "Digichallenge24/Submissions/ID", id_file)
 
 st.markdown("""
 # Submission Guidelines
@@ -60,7 +58,7 @@ st.markdown("""
 - Only the most recent submission from each team will be considered at every job run. This is the score that will be reflected in the leaderboard.
 ### :trophy: Leaderboard
 ##### [PowerBI DigiChallenge 2024 Leaderboard](https://app.powerbi.com/groups/af629249-ad5b-42c4-8953-0f312d335990/reports/b5a6d2a5-953d-4b92-bfa2-3b6853c5bc3e?ctid=f66fae02-5d36-495b-bfe0-78a6ff9f8e6e&pbi_source=linkShare&bookmarkGuid=76c41688-3064-496c-9477-59b29875d78c)
-- Teams are encouraged to submit predictions for both markets since the winners will be chosen based on whichever team has the **highest cumulatize score** from both markets.
+- Teams are encouraged to submit predictions for both markets since the winners will be chosen based on whichever team has the **highest cumulative score** from both markets.
 - The public leaderboard compares the predictions with 50% of the actual sales volumes in the validation sets. The final submissions will be compared against 100% of the actual sales volumes in the validation sets. The final results will not be announced until the end of the challenge.
             """)
 
@@ -96,3 +94,4 @@ st.markdown("""
 # """, unsafe_allow_html=True)
 
 # st.markdown(html_table, unsafe_allow_html=True)
+
